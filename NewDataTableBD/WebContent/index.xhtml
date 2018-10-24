@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html
+	xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"> 
+      
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<title>Ejemplo DataTable</title>
+	<link rel="stylesheet" href="resources/css/materialize.min.css" />
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+</head>
+<body>
+	<h2>Venta Productos</h2>
+	<h:form class="s12">
+		<div class="row">
+			
+		<div class="input-field col s4">
+          	<h:inputText value="#{tablaBean.miPersona.documento}" id="documento" type="text"/>
+          	<label for="documento">Codigo</label>
+	    </div>
+	    <div class="input-field col s4">
+	    	<h:inputText value="#{tablaBean.miPersona.nombre}" id="nombre" type="text" class="validate" />
+			<label for="nombre">Nombre</label>
+		</div>
+	    <div class="input-field col s4">
+	    	<h:inputText class="validate" value="#{tablaBean.miPersona.apellido}" id="apellido" type="text" />
+			<label for="apellido">Descripcion</label>
+		</div>
+		</div>
+		<div class="row">
+	    <div class="input-field col s4">
+	    	<h:inputText class="validate" value="#{tablaBean.miPersona.salario}" id="salario" type="text" />
+			<label for="salario">Precio</label>
+		</div>
+		</div>
+		<div class="row">
+			<h:outputLabel class="col s1" value="Tipo:"/>
+    		<h:selectOneMenu class="col s2 browser-default" value="#{tablaBean.miPersona.sexo}" style="*:none">
+				<f:selectItem itemValue="A" itemLabel="Tipo A" />
+				<f:selectItem itemValue="B" itemLabel="Tipo B"/>
+				<f:selectItem itemValue="C" itemLabel="Tipo C"/>
+			</h:selectOneMenu>
+		</div>
+
+		<h:commandButton  class="col s1 btn waves-effect waves-light" action="#{tablaBean.agregarPersona()}" value="Registrar"  />
+		&nbsp;		&nbsp;		&nbsp;
+		<h:commandButton  class="col s1 btn waves-effect waves-light" action="#{tablaBean.setConsulta(true)}" value="Consulta Individual" />
+		&nbsp;		&nbsp;		&nbsp;
+		<h:commandButton  class="col s1 btn waves-effect waves-light" action="#{tablaBean.setMostrarTabla(false)}" value="Consultar Lista"  />
+		&nbsp;		&nbsp;		&nbsp;
+		
+		<div class="input-field col s4">
+          	<h:inputText value="#{tablaBean.miPersona.documento}" id="documentoC" type="text" rendered="#{tablaBean.consulta}"/>
+	    </div>
+		<h:commandButton  class="col s1 btn waves-effect waves-light" action="#{tablaBean.consultaPersona()}" value="Consultar" rendered="#{tablaBean.consulta}"/>
+		
+		
+		<h:dataTable  value="#{tablaBean.listaPersona}" var="datos" border="1" style="width: 500px;" rendered="#{not tablaBean.mostrarTabla}" >
+		<h:column>
+		<f:facet name="header">Codigo</f:facet>
+		<h:inputText value="#{datos.documento}" rendered="#{datos.editar}" style="width: 90px;" />
+		<h:outputLabel value="#{datos.documento}" rendered="#{not datos.editar}" />
+		</h:column>
+		<h:column>
+		<f:facet name="header">Nombre</f:facet>
+		<h:inputText value="#{datos.nombre}" rendered="#{datos.editar}" style="width: 90px;" />
+		<h:outputLabel value="#{datos.nombre}" rendered="#{not datos.editar}" />
+		</h:column>
+		<h:column>
+		<f:facet name="header">Descripcion</f:facet>
+		<h:inputText value="#{datos.apellido}" rendered="#{datos.editar}" style="width: 90px;" />
+		<h:outputLabel value="#{datos.apellido}"  rendered="#{not datos.editar}" />
+		</h:column>
+		<h:column>
+		<f:facet name="header">Precio</f:facet>
+		<h:inputText value="#{datos.salario}" rendered="#{datos.editar}" style="width: 90px;" />
+		<h:outputLabel value="#{datos.salario}" rendered="#{not datos.editar}" />
+		</h:column>
+		<h:column>
+		<f:facet name="header">Tipo</f:facet>
+		 <h:selectOneMenu class="col s2 browser-default" value="#{datos.sexo}" style="*:none; width: 155px;" rendered="#{datos.editar}">
+				<f:selectItem itemValue="A" itemLabel="Tipo A" />
+				<f:selectItem itemValue="B" itemLabel="Tipo B"/>
+				<f:selectItem itemValue="C" itemLabel="Tipo C"/>
+		</h:selectOneMenu>
+		<h:outputLabel value="#{datos.sexo}" rendered="#{not datos.editar}"/>
+		</h:column>
+		<h:column>
+		<f:facet name="header">
+		<h:outputLabel value="Acciones" />
+		</f:facet>
+		<h:commandLink action="#{tablaBean.editarPersona(datos)}" rendered="#{not datos.editar}" value="Editar"/>
+		<h:commandLink action="#{tablaBean.guardarPersona(datos)}" rendered="#{datos.editar}" value="Guardar"/>	
+		&nbsp;
+		<h:commandLink action="#{tablaBean.eliminarPersona(datos)}" value="Eliminar"/>
+		</h:column>
+		</h:dataTable>
+		<h:commandButton  class="btn waves-effect waves-light" action="#{tablaBean.setMostrarTabla(true)}" value="Esconder Tabla" rendered="#{not tablaBean.mostrarTabla}"/>
+	</h:form>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+	</body> 
+</html>
